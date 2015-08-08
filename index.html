@@ -14,16 +14,39 @@
         <div class="row">
                 <input type="text" class="form-control" id="searchBar" placeholder="Search for a place">
         </div>
-        <div class="map row">
-            <div class="col-xs-2">List</div>
-            <div class="col-xs-10 map">
+<!-- Sidebar of locations-->
+<div class="row-offcanvas row-offcanvas-left">
+  <div id="sidebar" class="sidebar-offcanvas">
+      <div class="col-md-12">
+        <h3>Sidebar (fixed)</h3>
+        <ul class="nav nav-pills nav-stacked">
+          <li class="active"><a href="#">Section</a></li>
+          <li><a href="#">Section</a></li>
+          <li><a href="#">Section</a></li>
+          <li><a href="#">Section</a></li>
+          <li><a href="#">Section</a></li>
+          <li><a href="#">Section</a></li>
+          <li><a href="#">Section</a></li>
+          <li><a href="#">Section</a></li>
+          <li><a href="#">Section</a></li>
+          <li><a href="#">Section</a></li>
+        </ul>
+      </div>
+  </div>
+<!-- Map area -->
+        <div id="main" class="map row">
+            <div class="col-md-12 map">
+                <!-- Make sidebar slider button visible on small screens -->
+                <p class="visible-xs">
+                    <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas"><i class="glyphicon glyphicon-chevron-left"></i></button>
+                </p>
                 <div class="google-map-canvas" id="map-canvas"></div>
             </div>
         </div>
     </div>
+</div><!--/row-offcanvas -->
 
-
-    <script src="/js/lib/jquery-2.1.4.min.js"></script>
+    <script src="js/lib/jquery-2.1.4.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script src="js/lib/knockout-3.3.0.js"></script>
     <script src="js/app.js"></script>

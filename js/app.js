@@ -6,7 +6,7 @@ function initialize() {
         // Default map center: Madrid, Spain
           center: { lat: 40.4213473, lng: -3.7005081},
 
-        // Defalut zoom
+        // Default zoom
           zoom: 12
         };
         var map = new google.maps.Map(document.getElementById('map-canvas'),

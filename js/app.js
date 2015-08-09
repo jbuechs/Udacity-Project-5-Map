@@ -1,3 +1,4 @@
+// Initializes and creates the google map
 var initialize = function(){
   mapOptions = {
   // Default map center: Madrid, Spain
@@ -9,9 +10,10 @@ var initialize = function(){
   // Create map
   map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
   // Load markers
-  mapView.loadMarkers();
+  mapViewModel.loadMarkers();
 };
 
+// Loads the script tag into end of body of html
 var loadScript = function(){
   var script = document.createElement('script');
   script.type = 'text/javascript';
@@ -23,7 +25,13 @@ var loadScript = function(){
   document.body.appendChild(script);
 };
 
-var mapView = {
+function stopAnimation(marker) {
+  setTimeout(function() {
+    marker.setAnimation(null);
+  }, 1400);
+}
+
+var mapViewModel = {
   init: function(){
       window.onload = loadScript;
   },
@@ -46,9 +54,15 @@ var mapView = {
         map: map,
         title: locArray[i].name,
       });
-      // Add click event listener to InfoWindow
+      // Add click event listener to markers to open InfoWindow and bounce
       google.maps.event.addListener(marker, 'click', function() {
         infowindow.open(map,this);
+        if (this.getAnimation() != null) {
+          this.setAnimation(null);
+        } else {
+          this.setAnimation(google.maps.Animation.BOUNCE);
+          stopAnimation(this);
+        }
       });
       this.markersArray.push(marker);
     }
@@ -58,7 +72,7 @@ var mapView = {
   },
 };
 
-mapView.init();
+mapViewModel.init();
 
   // Sidebar toggling on/off view on small screen
   $(document).ready(function() {

@@ -28,7 +28,7 @@ var loadScript = function(){
 function stopAnimation(marker) {
   setTimeout(function() {
     marker.setAnimation(null);
-  }, 1400);
+  }, 700);
 }
 
 var mapViewModel = {
@@ -57,12 +57,8 @@ var mapViewModel = {
       // Add click event listener to markers to open InfoWindow and bounce
       google.maps.event.addListener(marker, 'click', function() {
         infowindow.open(map,this);
-        if (this.getAnimation() != null) {
-          this.setAnimation(null);
-        } else {
-          this.setAnimation(google.maps.Animation.BOUNCE);
-          stopAnimation(this);
-        }
+        this.setAnimation(google.maps.Animation.BOUNCE);
+        stopAnimation(this);
       });
       this.markersArray.push(marker);
     }

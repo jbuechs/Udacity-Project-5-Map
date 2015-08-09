@@ -6,7 +6,9 @@
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="shortcut icon" href="img/favicon.ico">
+<!--
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBQo5RNjBcpqvkOJPWY0RdIPCLW9CazNIk"></script>
+-->
     <title>Project 5: Neighborhood Map</title>
 </head>
 <body>
@@ -14,41 +16,42 @@
         <div class="row">
                 <input type="text" class="form-control" id="searchBar" placeholder="Search for a place">
         </div>
-<!-- Sidebar of locations-->
-<div class="row-offcanvas row-offcanvas-left">
-  <div id="sidebar" class="sidebar-offcanvas">
-      <div class="col-md-12">
-        <h3>Locations</h3>
-        <ul class="nav nav-pills nav-stacked">
-          <li class="active"><a href="#">Section</a></li>
-          <li><a href="#">Section</a></li>
-          <li><a href="#">Section</a></li>
-          <li><a href="#">Section</a></li>
-          <li><a href="#">Section</a></li>
-          <li><a href="#">Section</a></li>
-          <li><a href="#">Section</a></li>
-          <li><a href="#">Section</a></li>
-          <li><a href="#">Section</a></li>
-          <li><a href="#">Section</a></li>
-        </ul>
-      </div>
-  </div>
-<!-- Map area -->
-        <div id="main" class="map row">
-            <div class="col-md-12 map">
-                <!-- Make sidebar slider button visible on small screens -->
-                <p class="visible-xs">
-                    <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas"><i class="glyphicon glyphicon-chevron-left"></i></button>
-                </p>
-                <div class="google-map-canvas" id="map-canvas"></div>
+        <!-- Sidebar of locations-->
+        <div class="row-offcanvas row-offcanvas-left">
+            <div id="sidebar" class="sidebar-offcanvas">
+                <div class="col-md-12">
+                    <h3>Locations</h3>
+                    <ul class="nav nav-pills nav-stacked">
+                        <li class="active"><a href="#">Section</a></li>
+                        <li><a href="#">Section</a></li>
+                        <li><a href="#">Section</a></li>
+                        <li><a href="#">Section</a></li>
+                        <li><a href="#">Section</a></li>
+                        <li><a href="#">Section</a></li>
+                        <li><a href="#">Section</a></li>
+                        <li><a href="#">Section</a></li>
+                        <li><a href="#">Section</a></li>
+                        <li><a href="#">Section</a></li>
+                    </ul>
+                </div>
             </div>
-        </div>
-    </div>
-</div><!--/row-offcanvas -->
+            <!-- Map area -->
+            <div id="main" class="map row">
+                <div class="col-md-12 map">
+                    <!-- Make sidebar slider button visible on small screens -->
+                    <p class="visible-xs">
+                        <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas"><i class="glyphicon glyphicon-chevron-left"></i></button>
+                    </p>
+                    <div class="google-map-canvas" id="map-canvas"></div>
+                </div>
+            </div>
+        </div><!--/row-offcanvas -->
+    </div><!--/container-fluid -->
 
-    <script src="js/lib/jquery-2.1.4.min.js"></script>
+    <script id="firstScript" src="js/lib/jquery-2.1.4.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script src="js/lib/knockout-3.3.0.js"></script>
+    <script src="js/locations.js"></script>
     <script src="js/app.js"></script>
 </body>
 </html>

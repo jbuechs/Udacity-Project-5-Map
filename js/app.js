@@ -70,9 +70,18 @@ var mapViewModel = {
 
 mapViewModel.init();
 
-  // Sidebar toggling on/off view on small screen
+// Sidebar toggling on/off view on small screen
   $(document).ready(function() {
     $('[data-toggle=offcanvas]').click(function() {
       $('.row-offcanvas').toggleClass('active');
     });
 });
+
+// BEGIN KNOCKOUT CODE
+
+function AppViewModel() {
+    this.koLocArray = ko.observableArray(neighborhood.locations);
+}
+
+// Activates knockout.js
+ko.applyBindings(new AppViewModel());

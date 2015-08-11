@@ -11,14 +11,14 @@
 <body>
     <div class="container-fluid">
         <div class="row">
-                <input type="text" class="form-control" id="searchBar" placeholder="Search for a place">
+                <input type="text" class="form-control" id="searchBar" placeholder="Search for a place" data-bind="textInput: filter, valueUpdate:'keyup'">
         </div>
         <!-- Sidebar of locations-->
         <div class="row-offcanvas row-offcanvas-left">
             <div id="sidebar" class="sidebar-offcanvas">
                 <div class="col-md-12">
                     <h3>Locations</h3>
-                    <ul class="nav nav-pills nav-stacked" data-bind="foreach: koLocArray">
+                    <ul class="nav nav-pills nav-stacked" data-bind="foreach: displayLoc">
                        <!-- <li class="active"><a href="#">Section</a></li> -->
                         <li><a href="#" data-bind="text: name"></a></li>
                     </ul>

@@ -81,6 +81,19 @@ mapViewModel.init();
 
 function AppViewModel() {
     this.koLocArray = ko.observableArray(neighborhood.locations);
+    this.filter = ko.observable('');
+    this.displayLoc = ko.computed(function() {
+      var filter = this.filter().toLowerCase();
+      if (!filter) {
+        return this.koLocArray();
+      }
+      else {
+        return ko.utils.arrayFilter(this.koLocArray(), function(item) {
+          var match = item.name.toLowerCase().indexOf(filter) != -1;
+          return match;
+        });
+      }
+    }, this);
 }
 
 // Activates knockout.js

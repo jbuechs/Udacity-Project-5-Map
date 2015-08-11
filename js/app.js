@@ -79,21 +79,43 @@ mapViewModel.init();
 
 // BEGIN KNOCKOUT CODE
 
+// Create location object
+var locObj = function(data) {
+  this.name = ko.observable(data.name);
+  this.address = ko.observable(data.address);
+  this.coord = ko.observable(data.coord);
+  this.type = ko.observable(data.type);
+  this.desc = ko.observable(data.desc);
+  this.marker = ko.observable({});
+};
+
 function AppViewModel() {
-    this.koLocArray = ko.observableArray(neighborhood.locations);
-    this.filter = ko.observable('');
-    this.displayLoc = ko.computed(function() {
-      var filter = this.filter().toLowerCase();
-      if (!filter) {
-        return this.koLocArray();
-      }
-      else {
-        return ko.utils.arrayFilter(this.koLocArray(), function(item) {
-          var match = item.name.toLowerCase().indexOf(filter) != -1;
-          return match;
-        });
-      }
-    }, this);
+  var self = this;
+  this.koLocArray = ko.observableArray([]);
+  var locationArray = neighborhood.locations;
+// Initialize KO array of locations
+  locationArray.forEach(function(loc) {
+    var newLoc = new locObj(loc);
+
+    self.koLocArray.push(newLoc);
+  });
+// Initialize filter term to null
+  this.filter = ko.observable('');
+// Initialize markers
+
+// Display locations in displayLoc array based on filter term
+  this.displayLoc = ko.computed(function() {
+    var filter = this.filter().toLowerCase();
+    if (!filter) {
+      return this.koLocArray();
+    }
+    else {
+      return ko.utils.arrayFilter(this.koLocArray(), function(item) {
+        var match = item.name().toLowerCase().indexOf(filter) != -1;
+        return match;
+      });
+    }
+  }, this);
 }
 
 // Activates knockout.js

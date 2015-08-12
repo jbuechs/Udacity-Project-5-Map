@@ -10,7 +10,7 @@ var initialize = function(){
   // Create map
   map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
   // Load markers
-//  mapViewModel.loadMarkers();
+  mapViewModel.loadMarkers();
 };
 
 // Loads the script tag into end of body of html
@@ -42,14 +42,15 @@ var mapViewModel = {
     var infowindow = new google.maps.InfoWindow({
       content: 'Hello, world!',
     });
-    locArray = neighborhood.locations;
-    this.markersArray = [];
+//    locArray = neighborhood.locations;
+    locArray = AVM.displayLoc();
     for (i = 0; i < locArray.length; i++) {
-      myLatlng = new google.maps.LatLng(locArray[i].coord.lat, locArray[i].coord.lng);
+      myLatlng = new google.maps.LatLng(locArray[i].coord().lat, locArray[i].coord().lng);
       marker = new google.maps.Marker({
         position: myLatlng,
         map: map,
-        title: locArray[i].name,
+        title: locArray[i].name(),
+        visible: true,
       });
       // Add click event listener to markers to open InfoWindow and bounce
       google.maps.event.addListener(marker, 'click', function() {
@@ -57,13 +58,10 @@ var mapViewModel = {
         this.setAnimation(google.maps.Animation.BOUNCE);
         stopAnimation(this);
       });
-      this.markersArray.push(marker);
+      AVM.koLocArray()[i].marker = marker;
     }
   },
 };
-
-//mapViewModel.init();
-
 
 // Sidebar toggling on/off view on small screen
   $(document).ready(function() {
@@ -81,7 +79,6 @@ var locObj = function(data) {
   this.coord = ko.observable(data.coord);
   this.type = ko.observable(data.type);
   this.desc = ko.observable(data.desc);
-  this.marker = ko.observable({});
 };
 
 function AppViewModel() {
@@ -90,37 +87,34 @@ function AppViewModel() {
   var locationArray = neighborhood.locations;
 // Initialize KO array of locations
   locationArray.forEach(function(loc) {
-    var newLoc = new locObj(loc);
-    self.koLocArray.push(newLoc);
+    self.koLocArray.push(new locObj(loc));
   });
 // Initialize filter term to null
   this.filter = ko.observable('');
 // Display locations in displayLoc array based on filter term
   this.displayLoc = ko.computed(function() {
     var filter = this.filter().toLowerCase();
+    console.log(filter);
     if (!filter) {
+      for (var i = 0; i < this.koLocArray().length; i++) {
+        if (this.koLocArray()[i].marker) {
+          this.koLocArray()[i].marker.setVisible(true);
+        }
+      }
       return this.koLocArray();
     }
     else {
       return ko.utils.arrayFilter(this.koLocArray(), function(item) {
         var match = item.name().toLowerCase().indexOf(filter) != -1;
+        item.marker.setVisible(match);
         return match;
       });
     }
   }, this);
-// Initialize markers
-  this.init_markers = function() {
-    var marker, myLatlng, i, locArray;
-    for (i = 0; i < this.koLocArray().length; i++) {
-      myLatlng = new google.maps.LatLng(this.koLocArray()[i].coord.lat, this.koLocArray()[i].coord.lng);
-      console.log(myLatlng);
-    }
-  };
-
 }
 
 // Activates knockout.js
 var AVM = new AppViewModel();
 window.onload = loadScript;
 ko.applyBindings(AVM);
-window.onload = AVM.init_markers();
+//window.onload = AVM.init_markers();

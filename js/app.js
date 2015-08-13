@@ -94,7 +94,6 @@ function AppViewModel() {
 // Display locations in displayLoc array based on filter term
   this.displayLoc = ko.computed(function() {
     var filter = this.filter().toLowerCase();
-    console.log(filter);
     if (!filter) {
       for (var i = 0; i < this.koLocArray().length; i++) {
         if (this.koLocArray()[i].marker) {
@@ -111,10 +110,13 @@ function AppViewModel() {
       });
     }
   }, this);
+  // Make clicked elment in list view be clicked on the marker
+  this.clickMarker = function() {
+    google.maps.event.trigger(this.marker, 'click');
+  };
 }
 
 // Activates knockout.js
 var AVM = new AppViewModel();
 window.onload = loadScript;
 ko.applyBindings(AVM);
-//window.onload = AVM.init_markers();

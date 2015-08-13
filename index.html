@@ -20,7 +20,7 @@
                     <h3>Locations</h3>
                     <ul class="nav nav-pills nav-stacked" data-bind="foreach: displayLoc">
                        <!-- <li class="active"><a href="#">Section</a></li> -->
-                        <li><a href="#" data-bind="text: name"></a></li>
+                        <li><a href="#" data-bind="text: name, click: $parent.clickMarker"></a></li>
                     </ul>
                 </div>
             </div>

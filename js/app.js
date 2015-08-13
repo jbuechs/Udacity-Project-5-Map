@@ -63,10 +63,19 @@ var mapViewModel = {
   },
 };
 
-// Sidebar toggling on/off view on small screen
-  $(document).ready(function() {
+$(document).ready(function() {
+  var items;
+  // Sidebar toggling on/off view on small screen
     $('[data-toggle=offcanvas]').click(function() {
       $('.row-offcanvas').toggleClass('active');
+    });
+  //Change active state for sidebar links
+    $('li').click(function() {
+      items = document.getElementsByTagName('li');
+      for (var i = 0; i < items.length; i++) {
+        items[i].className = '';
+      }
+      $(this).addClass('active');
     });
 });
 

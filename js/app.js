@@ -39,10 +39,9 @@ var mapViewModel = {
   loadMarkers: function(){
     var marker, myLatlng, i, locArray;
     // Create InfoWindow
-    var infowindow = new google.maps.InfoWindow({
+    this.infowindow = new google.maps.InfoWindow({
       content: 'Hello, world!',
     });
-//    locArray = neighborhood.locations;
     locArray = AVM.displayLoc();
     for (i = 0; i < locArray.length; i++) {
       myLatlng = new google.maps.LatLng(locArray[i].coord().lat, locArray[i].coord().lng);
@@ -51,10 +50,12 @@ var mapViewModel = {
         map: map,
         title: locArray[i].name(),
         visible: true,
+        info: locArray[i].contentString(),
       });
-      // Add click event listener to markers to open InfoWindow and bounce
+      // Add click event listener to markers to update & open InfoWindow and bounce
       google.maps.event.addListener(marker, 'click', function() {
-        infowindow.open(map,this);
+        mapViewModel.infowindow.setContent(this.info);
+        mapViewModel.infowindow.open(map,this);
         this.setAnimation(google.maps.Animation.BOUNCE);
         stopAnimation(this);
       });
@@ -88,6 +89,19 @@ var locObj = function(data) {
   this.coord = ko.observable(data.coord);
   this.type = ko.observable(data.type);
   this.desc = ko.observable(data.desc);
+  this.contentString = ko.computed(function(){
+    var beginHTML = '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>';
+    var headerString = '<h1 id="firstHeading" class="firstHeading">' +
+      this.name() +
+      '</h1>' +
+      '<div id="bodyContent">';
+    var endHTML = '</div>'+
+      '</div>';
+//      console.log(beginHTML + headerString + endHTML);
+      return beginHTML + headerString + endHTML;
+  }, this);
 };
 
 function AppViewModel() {
@@ -122,6 +136,17 @@ function AppViewModel() {
   // Make clicked elment in list view be clicked on the marker
   this.clickMarker = function() {
     google.maps.event.trigger(this.marker, 'click');
+  };
+  // Update content in infoWindow
+  this.updateContent = function(marker){
+    var itemMarker, match;
+    match = false;
+    var locArray = this.koLocArray();
+    for (var i = 0; i < locArray.length; i++) {
+      if (locArray[i].marker == marker) {
+        mapViewModel.infowindow.setContent(AVM.koLocArray()[i].contentString());
+      }
+    }
   };
 }
 

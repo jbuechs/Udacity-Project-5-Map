@@ -10,4 +10,7 @@ You can access the application in a couple of ways:
 ##About this Project
 For this project, I created a responsive web application that shows users some of my favorite places in Madrid. Users can search by name, click on the list of names, or click on the map markers. The search field filters the names and markers as the user types his/her search.
 
-This was my first time creating an app with ajax requests and it was frustrating and educational. I definitely need more practice programming with asynchronous functions!
+##What I learned
+1. I used the Knockout.js framework to achieve separation of concerns between my view and model.
+2. This was my first time creating an app with ajax requests and it was frustrating and educational. I definitely need more practice programming with asynchronous functions!
+3. This was also my first time using the Google Maps API, which I found very well-documented and user-friendly.

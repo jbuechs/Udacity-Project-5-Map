@@ -36,6 +36,31 @@ function stopAnimation(marker) {
   }, 700);
 }
 
+// Create content string for infoWindow
+function createContent(marker){
+  var locObj;
+  var locArray = AVM.koLocArray();
+  for (var i = 0; i < locArray.length; i++) {
+    if (locArray[i].marker == marker) {
+      locObj = locArray[i];
+    }
+  }
+  getFoursquare(locObj);
+  var beginHTML = '<div id="content">'+
+    '<div id="siteNotice">'+
+    '</div>';
+  var headerString = '<h4 id="firstHeading" class="firstHeading">' +
+    locObj.name() +
+    '</h4>' +
+    '<div id="bodyContent">';
+  var addressString = '<p><b>Address:</b> ' + locObj.address() + '</p>';
+  var descString = '<p><b>Description:</b> ' + locObj.desc() + '</p>';
+//    console.log(this.rating());
+  var ratingString = '<p><b>Foursquare rating:</b> ' + locObj.rating() + '</p>';
+  var endHTML = '</div>'+ '</div>';
+    return beginHTML + headerString + addressString + descString + ratingString + endHTML;
+}
+
 // Google Map API
 var mapViewModel = {
   init: function(){
@@ -57,11 +82,12 @@ var mapViewModel = {
         map: map,
         title: locArray[i].name(),
         visible: true,
-        info: locArray[i].contentString(),
+ //       info: locArray[i].contentString(),
       });
       // Add click event listener to markers to update & open InfoWindow and bounce
       google.maps.event.addListener(marker, 'click', function() {
-        mapViewModel.infowindow.setContent(this.info);
+        console.log(this.info);
+        mapViewModel.infowindow.setContent(createContent(marker));
         mapViewModel.infowindow.open(map,this);
         this.setAnimation(google.maps.Animation.BOUNCE);
         stopAnimation(this);
@@ -87,6 +113,27 @@ $(document).ready(function() {
     });
 });
 
+// FOURSQUARE API
+function updateLocCallback(locObj, rating) {
+  locObj.rating(rating);
+}
+
+function getFoursquare(locObj) {
+  console.log(locObj);
+  var foursquareUrl = 'https://api.foursquare.com/v2/venues/' + locObj.venue_id + '?client_id=' + CLIENT_ID + '&client_secret=' + CLIENT_SECRET + '&v=20140806';
+  $.getJSON(foursquareUrl)
+  .done(function(data){
+    var rating = data.response.venue.rating;
+    var id = data.response.venue.id;
+    //console.log(data.response, data.response.venue.id, data.response.venue.rating);
+    updateLocCallback(locObj, rating);
+    createContent(locObj.marker);
+  })
+  .fail(function(jqXHR, textStatus, errorThrown) {
+    console.log('Error connecting to Foursquare: ' + textStatus);
+  });
+}
+
 // BEGIN KNOCKOUT CODE
 
 // Create location object
@@ -98,6 +145,9 @@ var locObj = function(data) {
   this.type = ko.observable(data.type);
   this.desc = ko.observable(data.desc);
   this.venue_id = data.venue_id;
+  this.rating = ko.observable();
+
+/*
   $.ajax({
     url: 'https://api.foursquare.com/v2/venues/' + this.venue_id,
     dataType: 'json',
@@ -105,27 +155,13 @@ var locObj = function(data) {
     async: true,
     hotspot: self,
     success: function(data) {
-      console.log(data.response.venue.rating, self);
+      console.log(data.response.venue.rating, this.hotspot);
       this.hotspot.rating = data.response.venue.rating;
     }
   });
   console.log(this.name(), this.rating);
-  this.contentString = ko.computed(function(){
-    var self = this;
-    var beginHTML = '<div id="content">'+
-      '<div id="siteNotice">'+
-      '</div>';
-    var headerString = '<h4 id="firstHeading" class="firstHeading">' +
-      this.name() +
-      '</h4>' +
-      '<div id="bodyContent">';
-    var addressString = '<p><b>Address:</b> ' + this.address() + '</p>';
-    var descString = '<p><b>Description:</b> ' + this.desc() + '</p>';
-    var ratingString = '<p><b>Foursquare rating:</b> <span id="fourRating">' + this.rating + '</span></p>';
-    var endHTML = '</div>'+
-      '</div>';
-      return beginHTML + headerString + addressString + descString + ratingString + endHTML;
-  }, this);
+*/
+
 };
 
 function AppViewModel() {
@@ -160,17 +196,6 @@ function AppViewModel() {
   // Make clicked element in list view be clicked on the marker
   this.clickMarker = function() {
     google.maps.event.trigger(this.marker, 'click');
-  };
-  // Update content in infoWindow
-  this.updateContent = function(marker){
-    var itemMarker, match;
-    match = false;
-    var locArray = this.koLocArray();
-    for (var i = 0; i < locArray.length; i++) {
-      if (locArray[i].marker == marker) {
-        mapViewModel.infowindow.setContent(AVM.koLocArray()[i].contentString());
-      }
-    }
   };
 }
 

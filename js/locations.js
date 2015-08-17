@@ -96,16 +96,6 @@ var neighborhood = {
 		'desc': 'Yummy, creative tapas at reasonable prices.',
 		'venue_id': '4b6ee7d1f964a52038d02ce3',
 	},
-	/*
-	{
-		'name': '',
-		'address': '',
-		'coord': {lat: 0, lng: 0},
-		'type': '',
-		'desc': '',
-		'place_id': '',
-	},
-	*/
 	]
 
 };

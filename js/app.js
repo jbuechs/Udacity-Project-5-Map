@@ -7,7 +7,6 @@ var initialize = function(){
   mapOptions = {
   // Default map center: Madrid, Spain
     center: { lat: 40.4213473, lng: -3.7005081},
-
   // Default zoom
     zoom: 14,
   };
@@ -74,6 +73,7 @@ var mapViewModel = {
 $(document).ready(function() {
   var items;
   // Sidebar toggling on/off view on small screen
+  // Sidebar slider code from http://www.codeply.com/go/bp/mL7j0aOINa
     $('[data-toggle=offcanvas]').click(function() {
       $('.row-offcanvas').toggleClass('active');
     });
@@ -159,7 +159,7 @@ function AppViewModel() {
   };
 }
 
-// Activates knockout.js
+// Activates knockout.js and loads Google Map
 var AVM = new AppViewModel();
 window.onload = loadScript;
 ko.applyBindings(AVM);
